@@ -3,23 +3,28 @@ import {context} from '../context/context';
 import axios from 'axios';
 
 function ReadPage() {
-    const [name, setName] = useState('');
-    const [reg, setReg] = useState('');
+    const [curName, setName] = useState('');
+    const [curReg, setReg] = useState('');
     const [message, setMessage] = useState('');
-    const { setList } = useContext(context);
+    const { list, setList } = useContext(context);
 
     async function createData(e) {
         e.preventDefault(); // Prevent the form from refreshing the page
         
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/data/list', { name, reg });
-            const data = response.data;
+            // const response = await axios.post('http://localhost:3000/api/v1/data/list', { curName, curReg });
+            // const data = response.data;
 
-            // Check if the data is successfully created
-            if (data.name === name) {
-                setMessage('Data created successfully!');
-                setList(it => [...it, data]);  // Update the list in the context
-            }
+            // // Check if the data is successfully created
+            // if (data.curName === curName) {
+            //     setMessage('Data created successfully!');
+            //     setList(it => [...it, data]);  // Update the list in the context
+            // }
+
+            const newStudent = { name: curName, reg: curReg };
+            setMessage('Data created successfully!');
+            list.push(newStudent);
+            setList(list);
         } catch (error) {
             console.error('Error creating data:', error);
             setMessage('Error creating data!');
@@ -35,13 +40,13 @@ function ReadPage() {
                     </label>
                     <input
                         type="text"
-                        value={name}
+                        value={curName}
                         onChange={(e) => setName(e.target.value)}
                         required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                     <p className="mt-1 text-xs text-gray-500">
-                        We'll never share your name with anyone else.
+                        We'll never share your curName with anyone else.
                     </p>
                 </div>
 
@@ -51,7 +56,7 @@ function ReadPage() {
                     </label>
                     <input
                         type="text"
-                        value={reg}
+                        value={curReg}
                         onChange={(e) => setReg(e.target.value)}
                         required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
